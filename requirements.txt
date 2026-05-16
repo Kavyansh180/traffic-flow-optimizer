@@ -1,0 +1,18 @@
+# RL & Environment
+gymnasium==0.29.1
+stable-baselines3[extra]==2.2.1
+numpy==1.26.4
+
+# Tracking
+mlflow==2.10.2
+
+# Inference / API (Lambda)
+fastapi==0.109.2
+uvicorn==0.27.1
+mangum==0.17.0
+
+# AWS
+boto3==1.34.40
+
+# Frontend
+streamlit==1.31.0
