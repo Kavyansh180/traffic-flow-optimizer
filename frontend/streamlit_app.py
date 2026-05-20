@@ -308,7 +308,7 @@ with st.sidebar:
         options=["Slow", "Medium", "Fast"],
         value="Medium"
     )
-    speed_map = {"Slow": 0.8, "Medium": 0.4, "Fast": 0.1}
+    speed_map = {"Slow": 1.0, "Medium": 0.6, "Fast": 0.3}
 
     is_running = st.session_state.sim_step < st.session_state.get("auto_target_step", 0)
 
@@ -587,17 +587,31 @@ rl_avg = st.session_state.sim_queue_sum_accumulator / max(1, st.session_state.si
 fixed_sum = sum(st.session_state.sim_fixed_history)
 fixed_avg = fixed_sum / max(1, len(st.session_state.sim_fixed_history))
 
+# Calculate efficiency percentage
 efficiency_pct = ((fixed_avg - rl_avg) / fixed_avg) * 100 if fixed_avg > 0 else 0.0
-is_better = efficiency_pct > 0
 
 if st.session_state.sim_step == 0:
-    winner_text = "— Simulation Ready"
+    winner_text = "– Simulation Ready"
     winner_color = "#4a6b8a"
     efficiency_label = "Waiting for data..."
 else:
-    winner_text = "✓ RL Agent Winning" if is_better else "△ Fixed Timer Leading"
-    winner_color = "#00ff88" if is_better else "#ff6b6b"
-    efficiency_label = f"{abs(efficiency_pct):.1f}% {'more' if is_better else 'less'} efficient than Fixed Timer"
+    # State 1: RL Agent is strictly better
+    if efficiency_pct > 0:
+        winner_text = "✓ RL Agent Winning"
+        winner_color = "#00ff88"
+        efficiency_label = f"{abs(efficiency_pct):.1f}% more efficient than Fixed Timer"
+        
+    # State 2: Completely tied
+    elif efficiency_pct == 0:
+        winner_text = "⚖ Tied"
+        winner_color = "#4a6b8a"
+        efficiency_label = "Tied. Run more steps to see a variance difference."
+        
+    # State 3: Fixed timer is better
+    else:
+        winner_text = "⚠ Fixed Timer Leading"
+        winner_color = "#ff6b6b"
+        efficiency_label = f"{abs(efficiency_pct):.1f}% less efficient than Fixed Timer"
 
 st.markdown(f"""
 <div class="efficiency-box">
