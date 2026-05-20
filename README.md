@@ -2,7 +2,9 @@
 
 Real-world traffic signals run on fixed timers — green for 30 seconds, red for 30 seconds, regardless of actual traffic. This wastes time and causes unnecessary congestion.
 
-This project trains a **PPO Reinforcement Learning agent** on a custom Gymnasium simulation to fix that. The agent observes queue lengths across all 4 lanes in real time and decides which signal phase to activate — learning through 200,000 timesteps of trial and error to minimize total vehicle wait time. At 60 steps it achieves **14.3% lower queue lengths** than a fixed-timer baseline.
+This project trains a **PPO Reinforcement Learning agent** on a custom Gymnasium simulation to fix that. The agent observes queue lengths across all 4 lanes in real time and decides which signal phase to activate — learning through 200,000 timesteps of trial and error to minimize total vehicle wait time. At 60 steps it achieves **14.3% lower queue lengths**(depends on live data) than a fixed-timer baseline.
+
+Run around 40+ steps for the RL advantage to become statistically significant
 
 **[→ Live Demo](https://traffic-flow-optimizer-2fwlhjq7tvrrvpnd2woh5z.streamlit.app/)**
 
