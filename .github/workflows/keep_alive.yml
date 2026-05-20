@@ -1,0 +1,25 @@
+name: Keep Streamlit App Alive
+
+on:
+  schedule:
+    - cron: '0 */8 * * *'  # runs every 8 hours (00:00, 08:00, 16:00 UTC)
+  workflow_dispatch:        # allows manual trigger from GitHub Actions tab
+
+jobs:
+  wake_app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping Streamlit App
+        run: |
+          echo "Pinging Streamlit app to prevent sleep..."
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            --max-time 30 \
+            --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
+            https://traffic-flow-optimizer-2fwlhjq7tvrrvpnd2woh5z.streamlit.app/)
+          echo "Response status: $STATUS"
+          if [ "$STATUS" -eq 200 ]; then
+            echo "App is alive and responding!"
+          else
+            echo "Warning: App returned status $STATUS"
+          fi
