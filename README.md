@@ -1,12 +1,10 @@
 # 🚦 Autonomous Traffic Flow Optimizer
 
-> PPO-trained RL agent that controls traffic signals at a 4-way intersection — dynamically outperforming fixed-timer systems by responding to real-time queue lengths.
+Real-world traffic signals run on fixed timers — green for 30 seconds, red for 30 seconds, regardless of actual traffic. This wastes time and causes unnecessary congestion.
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://traffic-flow-optimizer-2fwlhjq7tvrrvpnd2woh5z.streamlit.app/)
-[![AWS Lambda](https://img.shields.io/badge/Backend-AWS%20Lambda-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/lambda/)
-[![Docker](https://img.shields.io/badge/Container-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
-[![Python](https://img.shields.io/badge/Python-3.10-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![GitHub Actions](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/Kavyansh180/traffic-flow-optimizer/actions)
+This project trains a **PPO Reinforcement Learning agent** on a custom Gymnasium simulation to fix that. The agent observes queue lengths across all 4 lanes in real time and decides which signal phase to activate — learning through 200,000 timesteps of trial and error to minimize total vehicle wait time. At 60 steps it achieves **14.3% lower queue lengths** than a fixed-timer baseline.
+
+**[→ Live Demo](https://traffic-flow-optimizer-2fwlhjq7tvrrvpnd2woh5z.streamlit.app/)**
 
 ---
 
@@ -53,12 +51,16 @@ GitHub Actions → keep_alive.yml (pings app every 8hrs)
 |-------|------|
 | RL Algorithm | PPO — Stable-Baselines3 |
 | Environment | Custom Gymnasium |
+| Experiment Tracking | MLflow |
 | Inference | FastAPI + Mangum |
-| Deploy | AWS Lambda + ECR + Docker |
+| Containerization | Docker |
+| Container Registry | AWS ECR |
+| Serverless Deploy | AWS Lambda |
 | Monitoring | AWS CloudWatch |
-| Frontend | Streamlit Cloud |
+| Frontend | Streamlit |
+| Hosting | Streamlit Community Cloud |
 | CI/CD | GitHub Actions |
-
+| Language | Python 3.10 |
 ---
 
 ## Project Structure
