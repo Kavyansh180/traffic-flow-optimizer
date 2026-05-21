@@ -2,24 +2,36 @@ name: Keep Streamlit App Alive
 
 on:
   schedule:
-    - cron: '0 */8 * * *'  # runs every 8 hours (00:00, 08:00, 16:00 UTC)
-  workflow_dispatch:        # allows manual trigger from GitHub Actions tab
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
 
 jobs:
   wake_app:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Ping Streamlit App
+      - name: Install Playwright
         run: |
-          echo "Pinging Streamlit app to prevent sleep..."
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            --max-time 30 \
-            --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
-            https://traffic-flow-optimizer-2fwlhjq7tvrrvpnd2woh5z.streamlit.app/)
-          echo "Response status: $STATUS"
-          if [ "$STATUS" -eq 200 ]; then
-            echo "App is alive and responding!"
-          else
-            echo "Warning: App returned status $STATUS"
-          fi
+          pip install playwright
+          playwright install chromium
+
+      - name: Wake app with real browser
+        run: |
+          python - <<'EOF'
+          from playwright.sync_api import sync_playwright
+          import time
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page()
+              print("Opening Streamlit app...")
+              page.goto(
+                  "https://traffic-flow-optimizer-2fwlhjq7tvrrvpnd2woh5z.streamlit.app/",
+                  timeout=60000,
+                  wait_until="networkidle"
+              )
+              time.sleep(15)
+              print(f"Page title: {page.title()}")
+              print("App is awake!")
+              browser.close()
+          EOF
