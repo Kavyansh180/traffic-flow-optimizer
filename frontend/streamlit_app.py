@@ -5,8 +5,8 @@ import random
 import time
 import base64
 
-API_ENDPOINT = "https://u7tivljb4txpkjnxhpzbydjlna0ynxka.lambda-url.eu-north-1.on.aws/predict"
-HEALTH_ENDPOINT = "https://u7tivljb4txpkjnxhpzbydjlna0ynxka.lambda-url.eu-north-1.on.aws/"
+API_ENDPOINT = "https://a2nimgj45qqniergoixy3zqwua0uqhsv.lambda-url.eu-north-1.on.aws/predict"
+HEALTH_ENDPOINT = "https://a2nimgj45qqniergoixy3zqwua0uqhsv.lambda-url.eu-north-1.on.aws/"
 
 st.set_page_config(
     page_title="RL Traffic Flow Optimizer",
